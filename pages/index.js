@@ -5,7 +5,7 @@ import './main.css'
 
 const Home = () => {
   return <div id="main">
-    <h1>XDD </h1>
+    <h1>xDD interface</h1>
     <h2>Papers, but fun</h2>
     <Nav />
   </div>
