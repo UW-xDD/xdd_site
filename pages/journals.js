@@ -1,12 +1,11 @@
 import React from 'react'
 import Head from 'next/head'
-import Nav from '../components/nav'
+import BasePage from '../components/base-page'
 
 const Journals = () => {
-  return <div>
-    <h1>xDD journal holdings</h1>
-    <Nav />
-  </div>
+  return <BasePage title="journal search">
+    <p>xDD journal holdings</p>
+  </BasePage>
 }
 
 export default Journals
