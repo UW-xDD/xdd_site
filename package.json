@@ -8,12 +8,15 @@
     "start": "next start"
   },
   "dependencies": {
+    "@macrostrat/ui-components": "^0.1.1",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-stylus": "^1.0.1",
     "next": "9.1.1",
     "react": "16.10.2",
     "react-dom": "16.10.2",
     "react-hyperscript": "^3.2.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
     "stylus": "^0.54.7"
   }
 }
