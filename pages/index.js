@@ -4,7 +4,7 @@ import Nav from '../components/nav'
 
 const Home = () => {
   return <div>
-    <h1>XDD interface</h1>
+    <h1>xDD interface</h1>
     <Nav />
   </div>
  }
