@@ -1,10 +1,12 @@
 import React from 'react'
 import Head from 'next/head'
 import Nav from '../components/nav'
+import './main.css'
 
 const Home = () => {
-  return <div>
-    <h1>XDD interface</h1>
+  return <div id="main">
+    <h1>XDD </h1>
+    <h2>Papers, but fun</h2>
     <Nav />
   </div>
  }
