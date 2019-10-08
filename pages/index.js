@@ -1,14 +1,11 @@
 import React from 'react'
 import Head from 'next/head'
-import Nav from '../components/nav'
-import './main.css'
+import BasePage from '../components/base-page'
 
 const Home = () => {
-  return <div id="main">
-    <h1>xDD interface</h1>
-    <h2>Papers, but fun</h2>
-    <Nav />
-  </div>
+  return <BasePage>
+    <p>Hello from home</p>
+  </BasePage>
  }
 
 export default Home

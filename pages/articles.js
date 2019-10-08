@@ -1,12 +1,11 @@
 import React from 'react'
 import Head from 'next/head'
-import Nav from '../components/nav'
+import BasePage from '../components/base-page'
 
 const Articles = () => {
-    return <div>
-        <h1>xDD article search</h1>
-        <Nav />
-        </div>
+  return <BasePage title="article search">
+    <p>An article</p>
+  </BasePage>
 }
 
 export default Articles
