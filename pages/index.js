@@ -3,8 +3,11 @@ import Head from 'next/head'
 import Nav from '../components/nav'
 
 const Home = () => {
-    return <div>Welcome to Next.js!</div>
-}
+  return <div>
+    <h1>XDD interface</h1>
+    <Nav />
+  </div>
+ }
 
 export default Home
 
