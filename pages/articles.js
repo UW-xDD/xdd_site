@@ -12,6 +12,13 @@ const loadCard = async function(){
 
 const APIResultView = dynamic(loadCard, { ssr: false });
 
+function renderResponse(res) {
+  const {data} = res.success;
+  return <ul className="papers">{data.map(paper => {
+    return <li><Link href={`/article/${paper._gddid}`}><a>{paper.title}</a></Link></li>
+  })}</ul>
+}
+
 const DocIDView = (props)=>{
   const {searchString} = props;
   let titleLike = null;
@@ -22,7 +29,9 @@ const DocIDView = (props)=>{
   if (titleLike != null) {
     return <APIResultView
       route="https://geodeepdive.org/api/articles"
-      params={{titleLike, max: 10}} />
+      params={{title_like: titleLike, max: 10}}
+      debounce={1000}
+    >{renderResponse}</APIResultView>
   }
   return <NonIdealState icon="alert" title="Document results">
     Search for documents
@@ -51,7 +60,7 @@ class Articles extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchString: "58b6b0dfcf58f110b18271ae"
+      searchString: null
     }
     this.updateSearchString = this.updateSearchString.bind(this)
   }
@@ -60,7 +69,7 @@ class Articles extends Component {
     return <BasePage title="article search">
       <InputGroup
         className="main-search"
-        placeholder="Enter a docid"
+        placeholder="Search for articles"
         leftIcon="search"
         large
         value={this.state.searchString}
