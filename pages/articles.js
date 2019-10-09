@@ -2,25 +2,37 @@ import React, {createContext, Component} from 'react'
 import Head from 'next/head'
 import BasePage from '../components/base-page'
 import dynamic from 'next/dynamic'
-import "@macrostrat/ui-components/lib/index.css"
-import "@blueprintjs/core/lib/css/blueprint.css"
-import {InputGroup, Callout} from "@blueprintjs/core"
+import {InputGroup, NonIdealState} from "@blueprintjs/core"
+import Link from 'next/link'
 
 const loadCard = async function(){
   const mod = await import('@macrostrat/ui-components')
-  return mod.GDDReferenceCard
+  return mod.APIResultView
 }
 
-const GDDReferenceCard = dynamic(loadCard, { ssr: false });
+const APIResultView = dynamic(loadCard, { ssr: false });
 
 const DocIDView = (props)=>{
   const {searchString} = props;
-  let docid = null;
-  if (searchString.length == 24) {
-    docid = searchString;
+  let titleLike = null;
+  if (searchString == null) return null
+  if (searchString.length > 3) {
+    titleLike = searchString;
   }
+  if (titleLike != null) {
+    return <APIResultView
+      route="https://geodeepdive.org/api/articles"
+      params={{titleLike, max: 10}} />
+  }
+  return <NonIdealState icon="alert" title="Document results">
+    Search for documents
+  </NonIdealState>
+
   if (docid != null) {
-    return <GDDReferenceCard docid={docid} />
+    return <div>
+      <GDDReferenceCard docid={docid} />
+      <Link href={`/article/${docid}`}><a>Details page</a></Link>
+    </div>
   }
   return <Callout icon="alert" title="Invalid docid"
     intent="warning">
