@@ -4,20 +4,29 @@ import "@macrostrat/ui-components/lib/index.css"
 import "@blueprintjs/core/lib/css/blueprint.css"
 import './main.css'
 
+const Subtitle = ({title})=>{
+  if (title == null) return null
+  return h("span.subtitle",[
+    " — ",
+    title
+  ])
+};
+
+const TitleBlock = ({title})=>{
+  return h("div.title", [
+    h("h1",[
+      "xDD",
+      h(Subtitle,{title})
+    ]),
+  ])
+};
+
 const BasePage = (props) => {
   const {title, ...rest} = props
 
-  let titleText = "xDD"
-  if (title) {
-    titleText += " — "+title
-  }
-
   return h("div#main", [
     h("header", [
-      h("div.title", [
-        h("h1",titleText),
-        h("h2","Papers, but fun")
-      ]),
+      h(TitleBlock, {title}),
       h(Nav)
     ]),
     h("div.page-body", rest)

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import classNames from 'classnames'
 
 const links = [
-  { href: '/', label: 'Snippets' },
+  { href: '/', label: 'Home' },
   { href: '/articles', label: 'Articles' },
   { href: '/snippets', label: 'Snippets' },
   { href: '/journals', label: 'Journals' } ].map(link => {

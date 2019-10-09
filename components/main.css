@@ -2,6 +2,12 @@ h1 {
   color: black;
 }
 
+span.subtitle {
+  color: #888;
+  font-style: italic;
+  font-weight: 200;
+}
+
 h2 {
   color: #888;
 }
