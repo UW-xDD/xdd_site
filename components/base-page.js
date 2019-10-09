@@ -7,7 +7,7 @@ import './main.css'
 const BasePage = (props) => {
   const {title, ...rest} = props
 
-  let titleText = "xDD interface"
+  let titleText = "xDD"
   if (title) {
     titleText += " — "+title
   }

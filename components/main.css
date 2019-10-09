@@ -27,6 +27,23 @@ nav ul li {
   margin-right: 1em;
 }
 
+
+
 .main-search {
   margin-bottom: 2em;
+}
+
+
+
+li a.active {
+  background-color: #ccc;
+  font-weight: bold;
+}
+
+nav li a {
+  font-size: 1.2em;
+  text-decoration: none;
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+  display: block;
 }
