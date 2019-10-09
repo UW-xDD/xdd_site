@@ -51,6 +51,12 @@ class Snippets extends Component {
         large
         value={this.state.searchString}
         onChange={this.updateSearchString}
+        onKeyPress={event => {
+          if (event.key === 'Enter') {
+              this.updateSearchString;
+              this.timeout=0
+          }
+        }}
       />
       <ResultView searchString={this.state.searchString} />
     </BasePage>
