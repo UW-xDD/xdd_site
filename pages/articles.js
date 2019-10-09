@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {createContext, Component} from 'react'
 import Head from 'next/head'
 import BasePage from '../components/base-page'
 import dynamic from 'next/dynamic'
@@ -29,7 +29,13 @@ const DocIDView = (props)=>{
 
 }
 
+const LoginContext = createContext({user: "Guest"});
+
+//const Provider = <LoginContext.Provider value={{user: "Daven"}} />
+
+
 class Articles extends Component {
+  static contextType = LoginContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -38,6 +44,7 @@ class Articles extends Component {
     this.updateSearchString = this.updateSearchString.bind(this)
   }
   render() {
+    const {user} = this.context;
     return <BasePage title="article search">
       <InputGroup
         className="main-search"
