@@ -10,13 +10,27 @@ const loadCard = async function(){
   return mod.APIResultView
 }
 
+const loadSwatch = async function(){
+  const mod = await import('../ui-components/components')
+  return mod.GeoDeepDiveSwatchInnerBare
+}
+
 const APIResultView = dynamic(loadCard, { ssr: false });
+const GeoDeepDiveSwatchInnerBare = dynamic(loadSwatch, { ssr: false });
+
+const Swatch = ({data}) => {
+    return <GeoDeepDiveSwatchInnerBare {...data} />
+}
 
 function renderResponse(res) {
-  const {data} = res.success;
-  return <ul className="papers">{data.map(paper => {
-    return <li><Link href={`/article/${paper._gddid}`}><a>{paper.title}</a></Link></li>
-  })}</ul>
+  if ("success" in res) {
+      const {data} = res.success;
+      return <ul className="papers">{data.map(paper => {
+          return <div><Link href={`/article/${paper._gddid}`}><a><Swatch data={paper} /></a></Link></div>
+      })}</ul>
+  } else {
+      return <div>No documents found!</div>
+  }
 }
 
 const DocIDView = (props)=>{
@@ -36,18 +50,6 @@ const DocIDView = (props)=>{
   return <NonIdealState icon="alert" title="Document results">
     Search for documents
   </NonIdealState>
-
-  if (docid != null) {
-    return <div>
-      <GDDReferenceCard docid={docid} />
-      <Link href={`/article/${docid}`}><a>Details page</a></Link>
-    </div>
-  }
-  return <Callout icon="alert" title="Invalid docid"
-    intent="warning">
-    A valid docid is 24 characters long!
-  </Callout>
-
 }
 
 const LoginContext = createContext({user: "Guest"});
