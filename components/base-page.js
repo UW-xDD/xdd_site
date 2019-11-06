@@ -21,6 +21,12 @@ const TitleBlock = ({title})=>{
   ])
 };
 
+const Footer = (props) => {
+  return <footer>
+    <b>xDD</b> is a project of University of Wisconsin — Madison
+  </footer>
+}
+
 const BasePage = (props) => {
   const {title, ...rest} = props
 
@@ -29,7 +35,8 @@ const BasePage = (props) => {
       h(TitleBlock, {title}),
       h(Nav)
     ]),
-    h("div.page-body", rest)
+    h("div.page-body", rest),
+    h(Footer)
   ])
 }
 

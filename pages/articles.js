@@ -13,9 +13,16 @@ const loadCard = async function(){
 const APIResultView = dynamic(loadCard, { ssr: false });
 
 function renderResponse(res) {
+  if (res.success == null) {
+    return <NonIdealState title={"No results"} icon="search" />
+  }
   const {data} = res.success;
   return <ul className="papers">{data.map(paper => {
-    return <li><Link href={`/article/${paper._gddid}`}><a>{paper.title}</a></Link></li>
+    return <li>
+      <Link href={`/article/${paper._gddid}`}>
+        <a>{paper.title}</a>
+      </Link>
+    </li>
   })}</ul>
 }
 
@@ -85,4 +92,3 @@ class Articles extends Component {
 }
 
 export default Articles
-
