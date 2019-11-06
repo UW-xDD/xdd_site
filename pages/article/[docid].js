@@ -8,19 +8,19 @@ import Link from 'next/link'
 //import {GeoDeepDiveSwatchInner} from '@macrostrat/ui-components'
 
 const loadAPIResultView = async function(){
-    const mod = await import('@macrostrat/ui-components')
+    const mod = await import('../../ui-components/components')
     return mod.APIResultView
 }
 const loadCard = async function(){
-  const mod = await import('@macrostrat/ui-components')
+  const mod = await import('../../ui-components/components')
   return mod.GDDReferenceCard
 }
 const loadSwatch = async function(){
-  const mod = await import('@macrostrat/ui-components')
+  const mod = await import('../../ui-components/components')
   return mod.GeoDeepDiveSwatchInner
 }
 const loadAuthorList = async function(){
-  const mod = await import('@macrostrat/ui-components')
+  const mod = await import('../../ui-components/components')
   return mod.AuthorList
 }
 
