@@ -15,11 +15,13 @@ const Subtitle = ({title})=>{
 const TitleBlock = ({title})=>{
   return h("div.title", [
     h("h1",[
-      "xDD",
-      h(Subtitle,{title})
+      "xDD"
     ]),
-  ])
+    <h3>A digital assistant to <em>extract knowledge</em> from <em>published documents</em>.</h3>
+  ]);
 };
+
+
 
 const Footer = (props) => {
   return <footer>
