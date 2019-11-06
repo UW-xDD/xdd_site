@@ -23,14 +23,13 @@ const Swatch = ({data}) => {
 }
 
 function renderResponse(res) {
-  if ("success" in res) {
-      const {data} = res.success;
-      return <ul className="papers">{data.map(paper => {
-          return <div><Link href={`/article/${paper._gddid}`}><a><Swatch data={paper} /></a></Link></div>
-      })}</ul>
-  } else {
-      return <div>No documents found!</div>
+  if (res.success == null) {
+    return <NonIdealState title={"No results"} icon="search" />
   }
+  const {data} = res.success;
+  return <ul className="papers">{data.map(paper => {
+      return <div><Link href={`/article/${paper._gddid}`}><a><Swatch data={paper} /></a></Link></div>
+  })}</ul>
 }
 
 const DocIDView = (props)=>{
@@ -87,4 +86,3 @@ class Articles extends Component {
 }
 
 export default Articles
-

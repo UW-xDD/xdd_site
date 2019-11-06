@@ -1,6 +1,28 @@
 @require("~@macrostrat/ui-components/lib/index.css")
 @require("~@blueprintjs/core/lib/css/blueprint.css")
 
+header
+  display flex
+  flex-direction row
+  margin-top 2em
+  .logo
+    margin-right 2rem
+  h1, h3
+    margin-top 0
+    margin-bottom 0
+    line-height: 1em
+  .page-title
+    display flex
+    flex-direction row
+    align-items: last-baseline
+    margin-top 1em
+    h1
+      font-size 2.8em
+      line-height 1em
+      margin-right 2rem
+    h3
+      line-height 1em
+
 h1 {
   color: black;
 }
@@ -18,12 +40,17 @@ h2 {
 html, body {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   font-size: 17px
+  margin 0
 }
 
-#main {
-  width: 40em;
-  margin: 0 auto;
-}
+#main
+  width: 50em
+  min-height 100vh
+  margin: 0 auto
+  display flex
+  flex-direction column
+  &>.page-body
+    flex-grow 1
 
 nav ul {
   list-style: none;
@@ -36,13 +63,9 @@ nav ul li {
   margin-right: 1em;
 }
 
-
-
 .main-search {
   margin-bottom: 2em;
 }
-
-
 
 li a.active {
   background-color: #ccc;
@@ -60,3 +83,8 @@ nav li a {
 em.hl {
   background-color: yellow;
 }
+
+footer
+  margin-bottom 1em
+  color #666
+  font-size 0.8em
