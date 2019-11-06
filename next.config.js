@@ -6,7 +6,7 @@ const withMDX = require('@next/mdx')({
 const withCoffeescript = require('next-coffeescript');
 
 const cfg = {
-  cssModules: true,
+  cssModules: false,
   pageExtensions: ['js', 'jsx', 'md', 'mdx','coffee']
 };
 

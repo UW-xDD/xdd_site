@@ -10,13 +10,41 @@ const loadCard = async function(){
   const mod = await import('@macrostrat/ui-components')
   return mod.APIResultView
 }
-
 const APIResultView = dynamic(loadCard, { ssr: false });
+
+const loadRefCard = async function(){
+  const mod = await import('@macrostrat/ui-components')
+  return mod.GddReferenceCard
+}
+const GddReferenceCard = dynamic(loadRefCard, { ssr: false });
+
+function RenderHighlights(highlights) {
+    return <ul>{highlights.map( (highlight) => {return <li><div dangerouslySetInnerHTML={{__html : highlight}}/></li>} )}</ul>
+}
+
+function RenderResult(res){
+    let data = res.success.data
+    let results = {}
+    data.map ( (art) => {
+        if ( !(art["pubname"] in results) ) {
+            results[art['pubname']] = []
+        }
+        results[art['pubname']].push(art)
+    } )
+    return <div className="snippets">
+        {Object.keys(results).map( (pub)=> {
+            return <div><h1>{pub}</h1>
+                <ul>{results[pub].map(paper => {
+                    return <div><h2>{paper.title}<p>({paper._gddid})</p></h2>{RenderHighlights(paper.highlight)}</div>
+                })}</ul></div>
+        })}
+        </div>
+}
 
 const ResultView = (props)=>{
   const {searchString} = props;
   if (searchString != null) {
-    return <APIResultView route="https://geodeepdive.org/api/snippets" params={{"term":searchString}} debounce="800"/>
+    return <APIResultView route="https://geodeepdive.org/api/snippets" params={{"term":searchString}} debounce="800">{RenderResult}</APIResultView>
   }
   return <Callout icon="alert" title="Snippets"
     intent="info">
