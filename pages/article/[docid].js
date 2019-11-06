@@ -29,10 +29,7 @@ const GDDReferenceCard = dynamic(loadCard, { ssr: false });
 const AuthorList = dynamic(loadAuthorList, { ssr: false });
 const GeoDeepDiveSwatchInner = dynamic(loadSwatch, { ssr: false });
 
-
 const Swatch = ({data}) => {
-    console.log("Trying to render swatch thing.")
-    console.log(data);
     return <GeoDeepDiveSwatchInner {...data} />
 }
 
