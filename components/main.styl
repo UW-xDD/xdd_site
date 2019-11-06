@@ -18,12 +18,17 @@ h2 {
 html, body {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   font-size: 17px
+  margin 0
 }
 
-#main {
-  width: 40em;
-  margin: 0 auto;
-}
+#main
+  width: 50em
+  min-height 100vh
+  margin: 0 auto
+  display flex
+  flex-direction column
+  &>.page-body
+    flex-grow 1
 
 nav ul {
   list-style: none;
@@ -36,13 +41,9 @@ nav ul li {
   margin-right: 1em;
 }
 
-
-
 .main-search {
   margin-bottom: 2em;
 }
-
-
 
 li a.active {
   background-color: #ccc;
@@ -60,3 +61,8 @@ nav li a {
 em.hl {
   background-color: yellow;
 }
+
+footer
+  margin-bottom 1em
+  color #666
+  font-size 0.8em

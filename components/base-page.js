@@ -23,7 +23,7 @@ const TitleBlock = ({title})=>{
 
 const Footer = (props) => {
   return <footer>
-    <b>xDD</b> is a project of University of Wisconsin — Madison
+    <b>xDD</b> is a project of University of Wisconsin — Madison.
   </footer>
 }
 
@@ -31,13 +31,13 @@ const BasePage = (props) => {
   const {title, ...rest} = props
 
   return h("div#main", [
-    h("header", [
-      h(TitleBlock, {title}),
-      h(Nav)
-    ]),
-    h("div.page-body", rest),
-    h(Footer)
-  ])
+      h("header", [
+        h(TitleBlock, {title}),
+        h(Nav)
+      ]),
+      h("div.page-body", rest),
+      h(Footer)
+    ]);
 }
 
 export default BasePage
