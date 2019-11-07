@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import "@macrostrat/ui-components/lib/index.css"
 import "@blueprintjs/core/lib/css/blueprint.css"
 import {InputGroup, Callout} from "@blueprintjs/core"
+import { useRouter } from 'next/router'
 
 const loadCard = async function(){
   const mod = await import('@macrostrat/ui-components')
@@ -34,19 +35,26 @@ function RenderResult(res){
     return <div className="snippets">
         {Object.keys(results).map( (pub)=> {
             return <div><h1>{pub}</h1>
-                <ul>{results[pub].map(paper => {
-                    return <div><h2>{paper.title}<p>({paper._gddid})</p></h2>{RenderHighlights(paper.highlight)}</div>
+                <ul>{results[pub].map((paper, i) => {
+                    return <div key={i}><h2>{paper.title}<p>({paper._gddid})</p></h2>{RenderHighlights(paper.highlight)}</div>
                 })}</ul></div>
         })}
         </div>
 }
 
 const ResultView = (props)=>{
+  const router = useRouter()
   const {searchString} = props;
+  const updateLocation = (v)=>{
+    console.log(v);
+    router.push("aaa");
+  }
+
   if (searchString != null && searchString != '') {
-      return <APIResultView 
-          route="https://geodeepdive.org/api/snippets" 
-          params={{"term":searchString}} 
+      return <APIResultView
+          route="https://geodeepdive.org/api/snippets"
+          params={{"term":searchString}}
+          success={updateLocation}
           debounce="1000">{RenderResult}</APIResultView>
   }
   return <Callout icon="alert" title="Snippets"
@@ -67,7 +75,7 @@ class Snippets extends Component {
     super(props);
     this.timeout = 0;
     this.state = {
-      searchString: null
+      searchString: ""
     }
     this.updateSearchString = this.updateSearchString.bind(this);
   }
@@ -99,4 +107,3 @@ class Snippets extends Component {
 }
 
 export default Snippets
-
