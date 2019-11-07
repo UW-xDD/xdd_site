@@ -43,8 +43,11 @@ function RenderResult(res){
 
 const ResultView = (props)=>{
   const {searchString} = props;
-  if (searchString != null) {
-    return <APIResultView route="https://geodeepdive.org/api/snippets" params={{"term":searchString}} debounce="800">{RenderResult}</APIResultView>
+  if (searchString != null && searchString != '') {
+      return <APIResultView 
+          route="https://geodeepdive.org/api/snippets" 
+          params={{"term":searchString}} 
+          debounce="1000">{RenderResult}</APIResultView>
   }
   return <Callout icon="alert" title="Snippets"
     intent="info">
