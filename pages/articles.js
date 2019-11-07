@@ -28,7 +28,10 @@ function renderResponse(res) {
   }
   const {data} = res.success;
   return <ul className="papers">{data.map(paper => {
-      return <div><Link href={`/article/${paper._gddid}`}><a><Swatch data={paper} /></a></Link></div>
+      return <li>
+        <Link href={`/article/${paper._gddid}`}><a><Swatch data={paper} /></a>
+        </Link>
+      </li>
   })}</ul>
 }
 
