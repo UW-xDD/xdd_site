@@ -2,7 +2,7 @@ import React, {createContext, Component} from 'react'
 import Head from 'next/head'
 import BasePage from '../components/base-page'
 import dynamic from 'next/dynamic'
-import {InputGroup, NonIdealState} from "@blueprintjs/core"
+import {InputGroup, NonIdealState, Callout} from "@blueprintjs/core"
 import Link from 'next/link'
 
 const loadCard = async function(){
@@ -37,21 +37,16 @@ function renderResponse(res) {
 
 const DocIDView = (props)=>{
   const {searchString} = props;
-  let titleLike = null;
-  if (searchString == null) return null
-  if (searchString.length > 3) {
-    titleLike = searchString;
-  }
-  if (titleLike != null) {
+  if (searchString != null && searchString != '') {
     return <APIResultView
       route="https://geodeepdive.org/api/articles"
-      params={{title_like: titleLike, max: 10}}
+      params={{title_like: searchString, max: 10}}
       debounce={1000}
     >{renderResponse}</APIResultView>
   }
-  return <NonIdealState icon="alert" title="Document results">
-    Search for documents
-  </NonIdealState>
+  return <Callout icon="alert" title="Articles">
+    Search for published articles within the xDD corpus.
+  </Callout>
 }
 
 const LoginContext = createContext({user: "Guest"});
