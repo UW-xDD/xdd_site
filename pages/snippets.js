@@ -1,7 +1,8 @@
-import React, {createContext, Component} from 'react'
+import React, {createContext, useState, Component, useEffect} from 'react'
 import Head from 'next/head'
 import BasePage from '../components/base-page'
 import dynamic from 'next/dynamic'
+import h from 'react-hyperscript'
 import "@macrostrat/ui-components/lib/index.css"
 import "@blueprintjs/core/lib/css/blueprint.css"
 import {InputGroup, Callout} from "@blueprintjs/core"
@@ -47,22 +48,13 @@ function RenderResult(res){
 
 const ResultView = (props)=>{
   const router = useRouter()
-  const {searchString} = props;
-  const updateLocation = (v)=>{
-    const href = {
-      pathname: "/snippets",
-      query: {search: searchString}
-    };
-    const as = href;
-    router.push(href, as, {shallow: true});
-  }
+  const {searchString, debounce} = props;
 
   if (searchString != null && searchString != '') {
       return <APIResultView
           route="https://geodeepdive.org/api/snippets"
-          params={{"term":searchString}}
-          onSuccess={updateLocation}
-          debounce="1000">{RenderResult}</APIResultView>
+          params={{"term":searchString, "full_results": true, inclusive: true}}
+          debounce={debounce}>{RenderResult}</APIResultView>
   }
   return <Callout icon="alert" title="Snippets"
     intent="info">
@@ -71,57 +63,60 @@ const ResultView = (props)=>{
 
 }
 
-//const LoginContext = createContext({user: "Guest"});
-//
-////const Provider = <LoginContext.Provider value={{user: "Daven"}} />
-//
+const useSearchString = (pathname)=> {
+  /*
+  A React hook to manage a search string and
+  synchronize URL query parameters
+  */
+  const router = useRouter();
 
-class SnippetsPage extends Component {
-//  static contextType = LoginContext;
-  constructor(props) {
-    super(props);
-    this.timeout = 0;
-    const {query} = this.props;
+  const [searchString, setState] = useState()
 
-    console.log(this.props);
-
-    let {search} = query;
-    if (search == null) {
-      search = "";
+  useEffect(()=>{
+    if (searchString == null) {
+      setState(router.query.search)
     }
+  }, [router.query]);
 
-    this.state = {searchString: search};
-    this.updateSearchString = this.updateSearchString.bind(this);
+  const updateSearchString = (val)=>{
+    setState(val)
+    // Update query to house search string
+    const href = {
+      pathname,
+      query: {search: searchString}
+    };
+    const as = href;
+    router.push(href, as, {shallow: true});
   }
 
-  static getInitialProps({query}) {
-    return {query}
-  }
+  return [searchString, updateSearchString]
+}
 
-  render() {
-    //const {user} = this.context;
-    return <BasePage title="snippets search">
-      <InputGroup
-        className="main-search"
-        placeholder="Enter a search term"
-        leftIcon="search"
-        large
-        value={this.state.searchString}
-        onChange={this.updateSearchString}
-        onKeyPress={event => {
-          if (event.key === 'Enter') {
-              this.updateSearchString;
-              this.timeout=0
-          }
-        }}
-      />
-      <ResultView searchString={this.state.searchString} />
-    </BasePage>
-  }
+const SnippetsPage = (props)=>{
+  const [searchString, updateSearchString] = useSearchString("/snippets");
+  const [timeout, setTimeout] = useState(2000)
 
-  updateSearchString(evt) {
-    this.setState({searchString: evt.target.value})
-  }
+  return <BasePage title="snippets search">
+    <InputGroup
+      className="main-search"
+      placeholder="Enter a search term"
+      leftIcon="search"
+      large
+      value={searchString}
+      onChange={ event =>{
+        updateSearchString(event.target.value)
+        setTimeout(2000)
+      }}
+      onKeyPress={event => {
+        if (event.key === 'Enter') {
+            updateSearchString(event.target.value);
+            setTimeout(0)
+            // Should set timeout to zero here...
+        }
+      }}
+    />
+    <ResultView searchString={searchString} debounce={timeout} />
+  </BasePage>
 }
 
 export default SnippetsPage
