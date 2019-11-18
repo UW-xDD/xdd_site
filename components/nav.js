@@ -6,7 +6,9 @@ import classNames from 'classnames'
 const links = [
   { href: '/', label: 'Snippets' },
   { href: '/articles', label: 'Articles' },
-  { href: '/journals', label: 'Journals' } ].map(link => {
+  { href: '/journals', label: 'Journals' },
+  { href: '/about', label: 'About' },
+  { href: '/team', label: 'Team' }].map(link => {
   link.key = `nav-link-${link.href}-${link.label}`
   return link
   })
