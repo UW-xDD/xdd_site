@@ -1,4 +1,4 @@
-import React, {createContext, useState, Component, useEffect} from 'react'
+import React, {createContext, useState, Component} from 'react'
 import Head from 'next/head'
 import BasePage from '../components/base-page'
 import dynamic from 'next/dynamic'
@@ -6,7 +6,8 @@ import h from 'react-hyperscript'
 import "@macrostrat/ui-components/lib/index.css"
 import "@blueprintjs/core/lib/css/blueprint.css"
 import {InputGroup, Callout} from "@blueprintjs/core"
-import { useRouter } from 'next/router'
+import { useSearchString } from '../components/search'
+import {LinkCard} from '../components/link-card'
 
 const loadCard = async function(){
   const mod = await import('../ui-components/components/api-frontend')
@@ -20,11 +21,26 @@ const loadRefCard = async function(){
 }
 const GddReferenceCard = dynamic(loadRefCard, { ssr: false });
 
-function RenderHighlights(highlights) {
-    return <ul>{highlights.map( (highlight) => {return <li><div dangerouslySetInnerHTML={{__html : highlight}}/></li>} )}</ul>
+const Highlight = ({highlight})=> {
+  return <li dangerouslySetInnerHTML={{__html : highlight}} />
 }
 
-function RenderResult(res){
+const Highlights = ({highlights}) => {
+    if (highlights == null) return null
+    return <ul>{highlights.slice(0,5).map( highlight => {
+      return <Highlight highlight={highlight} />
+    })}
+    </ul>
+}
+
+const PaperResult = ({paper}) => {
+    return <LinkCard className={paper._gddid} href={`/article/${paper._gddid}`}>
+      <h2>{paper.title}</h2>
+      <Highlights highlights={paper.highlight} />
+    </LinkCard>
+}
+
+const renderResult = (res) => {
     let data = res.success.data
     let results = {}
     data.map ( (art) => {
@@ -36,60 +52,30 @@ function RenderResult(res){
     return <div className="snippets">
         {Object.keys(results).map( (pub)=> {
             return <div>
-              <h1>{pub}</h1>
-              <ul>{results[pub].map((paper, i) => {
-                return <div key={i}><h2>{paper.title}<p>({paper._gddid})</p></h2>{RenderHighlights(paper.highlight)}</div>
+              <h1 className="journal-title">{pub}</h1>
+              <div>{results[pub].map((paper, i) => {
+                return <PaperResult key={i} paper={paper} />
               })}
-              </ul>
+              </div>
             </div>
         })}
         </div>
 }
 
 const ResultView = (props)=>{
-  const router = useRouter()
   const {searchString, debounce} = props;
 
   if (searchString != null && searchString != '') {
       return <APIResultView
           route="https://geodeepdive.org/api/snippets"
-          params={{"term":searchString, "full_results": true, inclusive: true}}
-          debounce={debounce}>{RenderResult}</APIResultView>
+          params={{"term":searchString, "full_results": true, inclusive: true, article_limit: 1}}
+          debounce={debounce}>{renderResult}</APIResultView>
   }
   return <Callout icon="alert" title="Snippets"
     intent="info">
     Search xDD for contextual use of a term or phrase.
   </Callout>
 
-}
-
-const useSearchString = (pathname)=> {
-  /*
-  A React hook to manage a search string and
-  synchronize URL query parameters
-  */
-  const router = useRouter();
-
-  const [searchString, setState] = useState()
-
-  useEffect(()=>{
-    if (searchString == null) {
-      setState(router.query.search)
-    }
-  }, [router.query]);
-
-  const updateSearchString = (val)=>{
-    setState(val)
-    // Update query to house search string
-    const href = {
-      pathname,
-      query: {search: searchString}
-    };
-    const as = href;
-    router.push(href, as, {shallow: true});
-  }
-
-  return [searchString, updateSearchString]
 }
 
 const SnippetsPage = (props)=>{
