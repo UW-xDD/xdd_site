@@ -46,6 +46,22 @@ function RenderResult(res){
         </div>
 }
 
+const RelatedTermsView = (props)=>{
+  const router = useRouter()
+  const {searchString, debounce} = props;
+
+  if (searchString != null && searchString != '') {
+      return <APIResultView
+          route="https://geodeepdive.org/api/similar_terms"
+          params={{"term": searchString}}
+          debounce={debounce} />
+  }
+  return <Callout icon="alert" title="Snippets"
+    intent="info">
+    Search xDD for contextual use of a term or phrase.
+  </Callout>
+
+}
 const ResultView = (props)=>{
   const router = useRouter()
   const {searchString, debounce} = props;
@@ -115,6 +131,7 @@ const SnippetsPage = (props)=>{
         }
       }}
     />
+    <RelatedTermsView searchString={searchString} debounce={timeout} />
     <ResultView searchString={searchString} debounce={timeout} />
   </BasePage>
 }
