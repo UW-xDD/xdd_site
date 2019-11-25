@@ -1,11 +1,11 @@
-import React, {createContext, useState, Component} from 'react'
+import React, {createContext, useState, Component, useEffect} from 'react'
 import Head from 'next/head'
 import BasePage from '../components/base-page'
 import dynamic from 'next/dynamic'
 import h from 'react-hyperscript'
 import "@macrostrat/ui-components/lib/index.css"
 import "@blueprintjs/core/lib/css/blueprint.css"
-import {InputGroup, Callout} from "@blueprintjs/core"
+import {InputGroup, Callout, Button, Intent} from "@blueprintjs/core"
 import { useSearchString } from '../components/search'
 import {LinkCard} from '../components/link-card'
 
@@ -80,20 +80,35 @@ const ResultView = (props)=>{
 
 const SnippetsPage = (props)=>{
   const [searchString, updateSearchString] = useSearchString("/snippets");
+  const [inputValue, setInputValue] = useState("");
+  // Set input value to search string when it changes (enables default search behaviour)
+  useEffect(()=>{
+    setInputValue(searchString)
+  }, [searchString])
+
 
   return <BasePage title="snippets search">
-    <InputGroup
-      className="main-search"
-      placeholder="Enter a search term"
-      leftIcon="search"
-      large
-      defaultValue={searchString}
-      onKeyPress={event => {
-        if (event.key === 'Enter') {
-          updateSearchString(event.target.value);
-        }
-      }}
-    />
+    <div className="searchbar">
+      <InputGroup
+        className="main-search"
+        placeholder="Enter a search term"
+        leftIcon="search"
+        large
+        value={inputValue}
+        onChange={event => {
+          setInputValue(event.target.value);
+        }}
+        onKeyPress={event => {
+          if (event.key === 'Enter') {
+            updateSearchString(event.target.value);
+          }
+        }}
+      />
+      <Button icon='arrow-right' large onClick={()=>{
+        updateSearchString(inputValue)
+      }
+      }/>
+    </div>
     <ResultView searchString={searchString} />
   </BasePage>
 }

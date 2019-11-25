@@ -80,10 +80,6 @@ nav ul li {
   margin-right: 1em;
 }
 
-.main-search {
-  margin-bottom: 2em;
-}
-
 li a.active {
   background-color: #ccc;
   font-weight: bold;
@@ -119,3 +115,12 @@ a.link-card
   margin-bottom 1em
   &:hover
     background-color: $light-gray3
+
+.searchbar
+  display flex
+  flex-direction row
+  .bp3-input-group.main-search
+    flex-grow 1
+    border-top-right-radius 0
+    margin-right 0.2em
+  margin-bottom: 2em
