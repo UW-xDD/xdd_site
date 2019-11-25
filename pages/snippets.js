@@ -40,26 +40,28 @@ const PaperResult = ({paper}) => {
     </LinkCard>
 }
 
-const renderResult = (res) => {
-    let data = res.success.data
-    let results = {}
-    data.map ( (art) => {
-        if ( !(art["pubname"] in results) ) {
-            results[art['pubname']] = []
-        }
-        results[art['pubname']].push(art)
-    } )
-    return <div className="snippets">
-        {Object.keys(results).map( (pub)=> {
-            return <div>
-              <h1 className="journal-title">{pub}</h1>
-              <div>{results[pub].map((paper, i) => {
-                return <PaperResult key={i} paper={paper} />
-              })}
-              </div>
-            </div>
-        })}
-        </div>
+const PublicationSnippets = (props) => {
+  const {name, papers} = props;
+  return <div>
+    <h1 className="journal-title">{name}</h1>
+    <div>{papers.map((paper, i) => h(PaperResult, {key: i, paper}))}</div>
+  </div>
+};
+
+const SnippetResults = (props) => {
+  const {data} = props
+  let results = {}
+  data.map ( (art) => {
+      if ( !(art["pubname"] in results) ) {
+          results[art['pubname']] = []
+      }
+      results[art['pubname']].push(art)
+  } )
+  const pubNames = Object.keys(results);
+
+  return <div className="snippets">
+    {pubNames.map( pub => h(PublicationSnippets, {name: pub, papers: results[pub]}))}
+  </div>
 }
 
 const ResultView = (props)=>{
@@ -69,7 +71,7 @@ const ResultView = (props)=>{
       return <APIResultView
           route="https://geodeepdive.org/api/snippets"
           params={{"term":searchString, "full_results": true, inclusive: true, article_limit: 1}}
-          debounce={debounce}>{renderResult}</APIResultView>
+          debounce={debounce}>{(res)=> h(SnippetResults, {data: res.success.data})}</APIResultView>
   }
   return <Callout icon="alert" title="Snippets"
     intent="info">
