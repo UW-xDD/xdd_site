@@ -21,7 +21,7 @@ const useSearchString = (pathname)=> {
     // Update query to house search string
     const href = {
       pathname,
-      query: {search: searchString}
+      query: {search: val}
     };
     const as = href;
     router.push(href, as, {shallow: true});

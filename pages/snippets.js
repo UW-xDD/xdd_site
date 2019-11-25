@@ -80,7 +80,6 @@ const ResultView = (props)=>{
 
 const SnippetsPage = (props)=>{
   const [searchString, updateSearchString] = useSearchString("/snippets");
-  const [timeout, setTimeout] = useState(2000)
 
   return <BasePage title="snippets search">
     <InputGroup
@@ -88,20 +87,14 @@ const SnippetsPage = (props)=>{
       placeholder="Enter a search term"
       leftIcon="search"
       large
-      value={searchString}
-      onChange={ event =>{
-        updateSearchString(event.target.value)
-        setTimeout(2000)
-      }}
+      defaultValue={searchString}
       onKeyPress={event => {
         if (event.key === 'Enter') {
-            updateSearchString(event.target.value);
-            setTimeout(0)
-            // Should set timeout to zero here...
+          updateSearchString(event.target.value);
         }
       }}
     />
-    <ResultView searchString={searchString} debounce={timeout} />
+    <ResultView searchString={searchString} />
   </BasePage>
 }
 
