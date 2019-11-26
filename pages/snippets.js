@@ -34,7 +34,7 @@ const Highlights = ({highlights}) => {
 }
 
 const PaperResult = ({paper}) => {
-    return <LinkCard className={paper._gddid} href={`/article/${paper._gddid}`}>
+    return <LinkCard className={`${paper._gddid} hit`} href={`/article/${paper._gddid}`}>
       <h2>{paper.title}</h2>
       <Highlights highlights={paper.highlight} />
     </LinkCard>
@@ -42,9 +42,11 @@ const PaperResult = ({paper}) => {
 
 const PublicationSnippets = (props) => {
   const {name, papers} = props;
-  return <div>
+  return <div className='publication'>
     <h1 className="journal-title">{name}</h1>
-    <div>{papers.map((paper, i) => h(PaperResult, {key: i, paper}))}</div>
+    <div>{papers.map((paper, i) => {
+      return h(PaperResult, {key: i, paper})
+    })}</div>
   </div>
 };
 
@@ -60,7 +62,7 @@ const SnippetResults = (props) => {
   const pubNames = Object.keys(results);
 
   return <div className="snippets">
-    {pubNames.map( pub => h(PublicationSnippets, {name: pub, papers: results[pub]}))}
+    {pubNames.map((pub,i) => h(PublicationSnippets, {name: pub, papers: results[pub], key: i}))}
   </div>
 }
 
@@ -70,7 +72,7 @@ const ResultView = (props)=>{
   if (searchString != null && searchString != '') {
       return <InfiniteScrollResultView
           route="https://geodeepdive.org/api/snippets"
-          params={{"term":searchString, "full_results": true, inclusive: true, article_limit: 1}}
+          params={{"term":searchString, "full_results": true, inclusive: true, article_limit: 2}}
           unwrapResponse={res=>res.success}>
           {SnippetResults}
       </InfiniteScrollResultView>

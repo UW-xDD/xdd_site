@@ -100,7 +100,11 @@ ul.papers
     margin-bottom 1em
 
 em.hl {
-  background-color: yellow;
+  background-color: lighten($green5, 30%);
+  display inline-block
+  padding-left 0.2em
+  padding-right 0.2em
+  border-radius: 0.2em
 }
 
 footer
@@ -124,3 +128,32 @@ a.link-card
     border-top-right-radius 0
     margin-right 0.2em
   margin-bottom: 2em
+
+// Snippets
+
+h1.journal-title
+  color: $gray1
+  font-size 1em
+  margin-bottom 0.2em
+  margin-top 2em
+
+div.publication
+  .link-card
+    margin-top 0.5em
+  h2
+    color $indigo2
+    margin-top 0
+    font-size 1.2em
+  ul
+    padding-left 1.2em
+    list-style-type none
+    margin-bottom 0
+    li
+      color $gray1
+      font-style italic
+      &:before
+        content: "–"
+        display block
+        float left
+        margin-right 0.5em
+        margin-left -1em
