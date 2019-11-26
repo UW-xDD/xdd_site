@@ -51,7 +51,7 @@ const PublicationSnippets = (props) => {
 };
 
 const SnippetResults = (props) => {
-  const {items} = props
+  const {items, count} = props
   let results = {}
   items.map ( (art) => {
       if ( !(art["pubname"] in results) ) {
@@ -61,8 +61,16 @@ const SnippetResults = (props) => {
   } )
   const pubNames = Object.keys(results);
 
-  return <div className="snippets">
-    {pubNames.map((pub,i) => h(PublicationSnippets, {name: pub, papers: results[pub], key: i}))}
+  let countItem = null;
+  if (count != null) {
+    countItem = <p className="count">{`${count} articles found.`}</p>
+  }
+
+  return <div className='results'>
+    {countItem}
+    <div className="snippets">
+      {pubNames.map((pub,i) => h(PublicationSnippets, {name: pub, papers: results[pub], key: i}))}
+    </div>
   </div>
 }
 
