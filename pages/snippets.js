@@ -10,10 +10,10 @@ import { useSearchString } from '../components/search'
 import {LinkCard} from '../components/link-card'
 
 const loadCard = async function(){
-  const mod = await import('../ui-components/components/api-frontend')
-  return mod.APIResultView
+  const mod = await import('../ui-components/components/infinite-scroll')
+  return mod.InfiniteScrollResultView
 }
-const APIResultView = dynamic(loadCard, { ssr: false });
+const InfiniteScrollResultView = dynamic(loadCard, { ssr: false });
 
 const loadRefCard = async function(){
   const mod = await import('@macrostrat/ui-components')
@@ -49,9 +49,9 @@ const PublicationSnippets = (props) => {
 };
 
 const SnippetResults = (props) => {
-  const {data} = props
+  const {items} = props
   let results = {}
-  data.map ( (art) => {
+  items.map ( (art) => {
       if ( !(art["pubname"] in results) ) {
           results[art['pubname']] = []
       }
@@ -68,10 +68,12 @@ const ResultView = (props)=>{
   const {searchString, debounce} = props;
 
   if (searchString != null && searchString != '') {
-      return <APIResultView
+      return <InfiniteScrollResultView
           route="https://geodeepdive.org/api/snippets"
           params={{"term":searchString, "full_results": true, inclusive: true, article_limit: 1}}
-          debounce={debounce}>{(res)=> h(SnippetResults, {data: res.success.data})}</APIResultView>
+          unwrapResponse={res=>res.success}>
+          {SnippetResults}
+      </InfiniteScrollResultView>
   }
   return <Callout icon="alert" title="Snippets"
     intent="info">
@@ -97,9 +99,7 @@ const SnippetsPage = (props)=>{
         leftIcon="search"
         large
         value={inputValue}
-        onChange={event => {
-          setInputValue(event.target.value);
-        }}
+        onChange={event => setInputValue(event.target.value)}
         onKeyPress={event => {
           if (event.key === 'Enter') {
             updateSearchString(event.target.value);
