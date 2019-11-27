@@ -9,6 +9,12 @@ import {InputGroup, Callout, Button, Intent} from "@blueprintjs/core"
 import { useSearchString } from '../components/search'
 import {LinkCard} from '../components/link-card'
 
+const loadAPIResultView = async function(){
+  const mod = await import('@macrostrat/ui-components')
+  return mod.APIResultView
+}
+const APIResultView = dynamic(loadAPIResultView, { ssr: false });
+
 const loadCard = async function(){
   const mod = await import('../ui-components/components/infinite-scroll')
   return mod.InfiniteScrollResultView
@@ -29,7 +35,7 @@ const GddRelatedTerms = dynamic(loadRelatedTerms, { ssr: false });
 
 const renderRelatedTerms = (res) => {
     const related_terms = res.success
-    return <GddRelatedTerms {related_terms} />
+    return <GddRelatedTerms {...related_terms} />
 }
 
 const Highlight = ({highlight})=> {
@@ -86,7 +92,6 @@ const SnippetResults = (props) => {
 }
 
 const RelatedTermsView = (props)=>{
-  const router = useRouter()
   const {searchString, debounce} = props;
 
   if (searchString != null && searchString != '') {
@@ -141,15 +146,6 @@ const SnippetsPage = (props)=>{
         onKeyPress={event => {
           if (event.key === 'Enter') {
             updateSearchString(event.target.value);
-<<<<<<< HEAD
-            setTimeout(0)
-            // Should set timeout to zero here...
-        }
-      }}
-    />
-    <RelatedTermsView searchString={searchString} debounce={timeout} />
-    <ResultView searchString={searchString} debounce={timeout} />
-=======
           }
         }}
       />
@@ -158,8 +154,8 @@ const SnippetsPage = (props)=>{
       }
       }/>
     </div>
+    <RelatedTermsView searchString={searchString} />
     <ResultView searchString={searchString} />
->>>>>>> 927965a15b9299e80fbe082895a84acd04719148
   </BasePage>
 }
 
