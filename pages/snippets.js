@@ -20,6 +20,17 @@ const loadRefCard = async function(){
 }
 const GddReferenceCard = dynamic(loadRefCard, { ssr: false });
 
+const loadRelatedTerms = async function(){
+  const mod = await import('../ui-components/components')
+  return mod.GeoDeepDiveRelatedTerms
+}
+const GddRelatedTerms = dynamic(loadRelatedTerms, { ssr: false });
+
+const renderRelatedTerms = (res) => {
+    const related_terms = res.success
+    return <GddRelatedTerms {related_terms} />
+}
+
 function RenderHighlights(highlights) {
     return <ul>{highlights.map( (highlight) => {return <li><div dangerouslySetInnerHTML={{__html : highlight}}/></li>} )}</ul>
 }
@@ -54,12 +65,13 @@ const RelatedTermsView = (props)=>{
       return <APIResultView
           route="https://geodeepdive.org/api/similar_terms"
           params={{"term": searchString}}
-          debounce={debounce} />
+          debounce={debounce}>{renderRelatedTerms}</APIResultView>
   }
-  return <Callout icon="alert" title="Snippets"
-    intent="info">
-    Search xDD for contextual use of a term or phrase.
-  </Callout>
+  return null
+//  return <Callout icon="alert" title="Related Terms"
+//    intent="info">
+//    Terms related to the one you searched for.
+//  </Callout>
 
 }
 const ResultView = (props)=>{
