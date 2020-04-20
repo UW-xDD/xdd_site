@@ -1,0 +1,159 @@
+@require("~@macrostrat/ui-components/lib/index.css")
+@require("~@blueprintjs/core/lib/css/blueprint.css")
+@require("../ui-components/components/shared/colors.styl")
+
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono:500|Merriweather|Montserrat:400,500,600,800&display=swap')
+//font-family: 'Merriweather', serif;
+//font-family: 'Montserrat', sans-serif;
+//font-family: 'Fira Mono', monospace;
+
+sans = "Montserrat", sans-serif
+main = "Merriweather", serif
+
+accent1=#621392
+accent2=#38a185
+
+highlight2=#70fa87
+
+h1,h2,h3,h4,h5,h6
+  font-family sans
+
+header
+  display flex
+  flex-direction row
+  margin-top 2em
+  .logo
+    margin-right 2rem
+  h1, h3
+    margin-top 0
+    margin-bottom 0
+    line-height: 1em
+  .page-title
+    display flex
+    flex-direction row
+    align-items: last-baseline
+    margin-top 1em
+    h1
+      font-size 2.8em
+      line-height 1em
+      margin-right 2rem
+    h3
+      line-height 1em
+
+h1 {
+  color: black;
+}
+
+span.subtitle {
+  color: #888;
+  font-style: italic;
+  font-weight: 200;
+}
+
+h2 {
+  color: #888;
+}
+
+html, body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 17px
+  margin 0
+}
+
+#main
+  width: 50em
+  min-height 100vh
+  margin: 0 auto
+  display flex
+  flex-direction column
+  &>.page-body
+    flex-grow 1
+
+nav ul {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+nav ul li {
+  margin-right: 1em;
+}
+
+li a.active {
+  background-color: #ccc;
+  font-weight: bold;
+}
+
+nav li a {
+  font-size: 1.2em;
+  text-decoration: none;
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+  display: block;
+}
+
+ul.papers
+  padding-left 0
+  list-style none
+  li
+    margin-bottom 1em
+
+em.hl {
+  background-color: lighten($green5, 30%);
+  display inline-block
+  padding-left 0.2em
+  padding-right 0.2em
+  border-radius: 0.2em
+}
+
+footer
+  margin-bottom 1em
+  color #666
+  font-size 0.8em
+
+a.link-card
+  display block
+  text-decoration none
+  color $dark-gray3
+  margin-bottom 1em
+  &:hover
+    background-color: $light-gray3
+
+.searchbar
+  display flex
+  flex-direction row
+  .bp3-input-group.main-search
+    flex-grow 1
+    border-top-right-radius 0
+    margin-right 0.2em
+  margin-bottom: 2em
+
+// Snippets
+
+h1.journal-title
+  color: $gray1
+  font-size 1em
+  margin-bottom 0.2em
+  margin-top 2em
+
+div.publication
+  .link-card
+    margin-top 0.5em
+  h2
+    color $indigo2
+    margin-top 0
+    font-size 1.2em
+  ul
+    padding-left 1.2em
+    list-style-type none
+    margin-bottom 0
+    li
+      color $gray1
+      font-style italic
+      &:before
+        content: "–"
+        display block
+        float left
+        margin-right 0.5em
+        margin-left -1em
