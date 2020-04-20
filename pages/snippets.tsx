@@ -10,7 +10,7 @@ import { useSearchString } from '../components/search'
 import {LinkCard} from '../components/link-card'
 
 const loadCard = async function(){
-  const mod = await import('../ui-components/components/infinite-scroll')
+  const mod = await import('@macrostrat/ui-components/src/components/infinite-scroll')
   return mod.InfiniteScrollResultView
 }
 const InfiniteScrollResultView = dynamic(loadCard, { ssr: false });
