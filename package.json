@@ -37,6 +37,7 @@
     "@types/node": "^13.13.0",
     "@types/react": "^16.9.34",
     "bulk": "^2.0.1",
+    "concurrently": "^5.1.0",
     "linklocal": "^2.8.2",
     "typescript": "^3.8.3"
   }
