@@ -2,7 +2,7 @@ import React, {createContext, useState, Component, useEffect} from 'react'
 import Head from 'next/head'
 import BasePage from '../components/base-page'
 import dynamic from 'next/dynamic'
-import h from 'react-hyperscript'
+import h from '@macrostrat/hyper'
 import "@macrostrat/ui-components/lib/esm/index.css"
 import "@blueprintjs/core/lib/css/blueprint.css"
 import {InputGroup, Callout, Button, Intent} from "@blueprintjs/core"
@@ -128,6 +128,11 @@ const RelatedTermsView = (props)=>{
 //  </Callout>
 
 }
+
+const InitialPlaceholder = (props)=>{
+
+}
+
 const ResultView = (props)=>{
   const {searchString, debounce} = props;
 

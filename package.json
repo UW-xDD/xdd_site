@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@blueprintjs/core": "^3.19.1",
+    "@macrostrat/hyper": "^1.2.6",
     "@macrostrat/ui-components": "file:./bundledDeps/ui-components",
     "@mdx-js/loader": "^1.5.1",
     "@next/mdx": "^9.1.3",
