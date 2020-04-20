@@ -28,7 +28,7 @@ const loadRefCard = async function(){
 const GddReferenceCard = dynamic(loadRefCard, { ssr: false });
 
 const loadRelatedTerms = async function(){
-  const mod = await import('../ui-components/components')
+  const mod = await import('@macrostrat/ui-components')
   return mod.GeoDeepDiveRelatedTerms
 }
 const GddRelatedTerms = dynamic(loadRelatedTerms, { ssr: false });
@@ -186,7 +186,6 @@ const SnippetsPage = (props)=>{
       }
       }/>
     </div>
-    <RelatedTermsView searchString={searchString} />
     <ResultView searchString={searchString} />
   </BasePage>
 }
