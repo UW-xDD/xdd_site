@@ -13,7 +13,8 @@ const cfg = {
     We ignore build errors in order to take advantage of typescript editor
     integrations only.
     */
-    ignoreBuildErrors: true
+    ignoreDevErrors: true,
+    ignoreBuildErrors: true,
   }
 };
 
