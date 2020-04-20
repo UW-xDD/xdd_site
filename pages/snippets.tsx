@@ -11,9 +11,9 @@ import {LinkCard} from '../components/link-card'
 
 const loadCard = async function(){
   const mod = await import('@macrostrat/ui-components/lib/esm/infinite-scroll')
-  return mod.InfiniteScrollResultView
+  return mod.InfiniteScrollView
 }
-const InfiniteScrollResultView = dynamic(loadCard, { ssr: false });
+const InfiniteScrollView = dynamic(loadCard, { ssr: false });
 
 const loadRefCard = async function(){
   const mod = await import('@macrostrat/ui-components')
@@ -78,12 +78,12 @@ const ResultView = (props)=>{
   const {searchString, debounce} = props;
 
   if (searchString != null && searchString != '') {
-      return <InfiniteScrollResultView
+      return <InfiniteScrollView
           route="https://geodeepdive.org/api/snippets"
           params={{"term":searchString, "full_results": true, inclusive: true, article_limit: 2}}
           unwrapResponse={res=>res.success}>
           {SnippetResults}
-      </InfiniteScrollResultView>
+      </InfiniteScrollView>
   }
   return <Callout icon="alert" title="Snippets"
     intent="info">

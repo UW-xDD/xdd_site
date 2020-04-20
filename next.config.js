@@ -15,6 +15,10 @@ const cfg = {
     */
     ignoreDevErrors: true,
     ignoreBuildErrors: true,
+  },
+  alias: {
+    "react": "node_modules/react",
+    "react-dom": "node_modules/react-dom"
   }
 };
 
