@@ -7,7 +7,14 @@ const withCoffeescript = require('next-coffeescript');
 
 const cfg = {
   cssModules: false,
-  pageExtensions: ['js', 'jsx', 'md', 'mdx','coffee']
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+  typescript: {
+    /*
+    We ignore build errors in order to take advantage of typescript editor
+    integrations only.
+    */
+    ignoreBuildErrors: true
+  }
 };
 
-module.exports = withMDX(withCoffeescript(withCSS(withStylus(cfg))));
+module.exports = withMDX(withCSS(withCoffeescript(withStylus(cfg))));
