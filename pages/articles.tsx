@@ -10,7 +10,7 @@ const loadCard = async function(){
 }
 
 const loadSwatch = async function(){
-  const mod = await import('../ui-components/components')
+  const mod = await import('@macrostrat/ui-components')
   return mod.GeoDeepDiveSwatchInnerBare
 }
 

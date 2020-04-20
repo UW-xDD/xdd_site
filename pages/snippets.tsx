@@ -3,14 +3,14 @@ import Head from 'next/head'
 import BasePage from '../components/base-page'
 import dynamic from 'next/dynamic'
 import h from 'react-hyperscript'
-import "@macrostrat/ui-components/lib/index.css"
+import "@macrostrat/ui-components/lib/esm/index.css"
 import "@blueprintjs/core/lib/css/blueprint.css"
 import {InputGroup, Callout, Button, Intent} from "@blueprintjs/core"
 import { useSearchString } from '../components/search'
 import {LinkCard} from '../components/link-card'
 
 const loadCard = async function(){
-  const mod = await import('@macrostrat/ui-components/src/components/infinite-scroll')
+  const mod = await import('@macrostrat/ui-components/lib/esm/infinite-scroll')
   return mod.InfiniteScrollResultView
 }
 const InfiniteScrollResultView = dynamic(loadCard, { ssr: false });

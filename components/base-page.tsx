@@ -1,7 +1,8 @@
 import h from 'react-hyperscript'
 import Nav from './nav'
-import "../ui-components/init"
 import './main.styl'
+// This throws an error if we include in the standard way
+import "../bundledDeps/ui-components/init"
 
 const Subtitle = ({title})=>{
   if (title == null) return null
