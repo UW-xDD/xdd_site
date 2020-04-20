@@ -1,5 +1,4 @@
 import React, {createContext, Component} from 'react'
-import Head from 'next/head'
 import BasePage from '../components/base-page'
 import dynamic from 'next/dynamic'
 import {InputGroup, NonIdealState, Callout} from "@blueprintjs/core"
@@ -11,7 +10,7 @@ const loadCard = async function(){
 }
 
 const loadSwatch = async function(){
-  const mod = await import('../ui-components/components')
+  const mod = await import('@macrostrat/ui-components')
   return mod.GeoDeepDiveSwatchInnerBare
 }
 
@@ -29,8 +28,7 @@ function renderResponse(res) {
   const {data} = res.success;
   return <ul className="papers">{data.map(paper => {
       return <li>
-        <Link href={`/article/${paper._gddid}`}><a><Swatch data={paper} /></a>
-        </Link>
+        <Link href={`/article/${paper._gddid}`}><a><Swatch data={paper} /></a></Link>
       </li>
   })}</ul>
 }
