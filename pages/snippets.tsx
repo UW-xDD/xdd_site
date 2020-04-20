@@ -9,6 +9,12 @@ import {InputGroup, Callout, Button, Intent} from "@blueprintjs/core"
 import { useSearchString } from '../components/search'
 import {LinkCard} from '../components/link-card'
 
+const loadAPIResultView = async function(){
+  const mod = await import('@macrostrat/ui-components')
+  return mod.APIResultView
+}
+const APIResultView = dynamic(loadAPIResultView, { ssr: false });
+
 const loadCard = async function(){
   const mod = await import('@macrostrat/ui-components/lib/esm/infinite-scroll')
   return mod.InfiniteScrollView
@@ -20,6 +26,17 @@ const loadRefCard = async function(){
   return mod.GddReferenceCard
 }
 const GddReferenceCard = dynamic(loadRefCard, { ssr: false });
+
+const loadRelatedTerms = async function(){
+  const mod = await import('@macrostrat/ui-components')
+  return mod.GeoDeepDiveRelatedTerms
+}
+const GddRelatedTerms = dynamic(loadRelatedTerms, { ssr: false });
+
+const renderRelatedTerms = (res) => {
+    const related_terms = res.success
+    return <GddRelatedTerms {...related_terms} />
+}
 
 const Highlight = ({highlight})=> {
   return <li dangerouslySetInnerHTML={{__html : highlight}} />
@@ -95,6 +112,22 @@ const SnippetResults = (props) => {
   </div>
 }
 
+const RelatedTermsView = (props)=>{
+  const {searchString, debounce} = props;
+
+  if (searchString != null && searchString != '') {
+      return <APIResultView
+          route="https://geodeepdive.org/api/similar_terms"
+          params={{"term": searchString}}
+          debounce={debounce}>{renderRelatedTerms}</APIResultView>
+  }
+  return null
+//  return <Callout icon="alert" title="Related Terms"
+//    intent="info">
+//    Terms related to the one you searched for.
+//  </Callout>
+
+}
 const ResultView = (props)=>{
   const {searchString, debounce} = props;
 
