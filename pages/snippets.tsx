@@ -5,98 +5,100 @@ import dynamic from 'next/dynamic'
 import h from '@macrostrat/hyper'
 import "@macrostrat/ui-components/lib/esm/index.css"
 import "@blueprintjs/core/lib/css/blueprint.css"
-import {InputGroup, Callout, Button, Intent} from "@blueprintjs/core"
+import { InputGroup, Callout, Button, Intent } from "@blueprintjs/core"
 import { useSearchString } from '../components/search'
 import {LinkCard} from '../components/link-card'
+import { Collapse, Card } from '@blueprintjs/core';
 
 const loadAPIResultView = async function(){
-  const mod = await import('@macrostrat/ui-components')
+  const mod = await import('@macrostrat/ui-components');
   return mod.APIResultView
-}
+};
 const APIResultView = dynamic(loadAPIResultView, { ssr: false });
 
 const loadCard = async function(){
-  const mod = await import('@macrostrat/ui-components/lib/esm/infinite-scroll')
+  const mod = await import('@macrostrat/ui-components/lib/esm/infinite-scroll');
   return mod.InfiniteScrollView
-}
+};
 const InfiniteScrollView = dynamic(loadCard, { ssr: false });
 
 const loadRefCard = async function(){
-  const mod = await import('@macrostrat/ui-components')
+  const mod = await import('@macrostrat/ui-components');
   return mod.GddReferenceCard
-}
+};
 const GddReferenceCard = dynamic(loadRefCard, { ssr: false });
 
 const loadRelatedTerms = async function(){
-  const mod = await import('@macrostrat/ui-components')
+  const mod = await import('@macrostrat/ui-components');
   return mod.GeoDeepDiveRelatedTerms
-}
+};
 const GddRelatedTerms = dynamic(loadRelatedTerms, { ssr: false });
 
 const renderRelatedTerms = (res) => {
-    const related_terms = res.success
+    const related_terms = res.success;
     return <GddRelatedTerms {...related_terms} />
-}
+};
 
 const Highlight = ({highlight})=> {
   return <li dangerouslySetInnerHTML={{__html : highlight}} />
-}
+};
 
 const Highlights = ({highlights}) => {
-    if (highlights == null) return null
+    if (highlights == null) return null;
     return <ul>{highlights.slice(0,5).map( highlight => {
       return <Highlight highlight={highlight} />
     })}
     </ul>
-}
+};
 
 const PaperResult = ({paper}) => {
     return <LinkCard className={`${paper._gddid} hit`} href={`/article/${paper._gddid}`}>
       <h2>{paper.title}</h2>
       <Highlights highlights={paper.highlight} />
     </LinkCard>
-}
+};
 
 const PublicationSnippets = (props) => {
   const {name, papers} = props;
-  return <div className='publication'>
-    <h1 className="journal-title">{name}</h1>
-    <div>{papers.map((paper, i) => {
-      return h(PaperResult, {key: i, paper})
-    })}</div>
-  </div>
+  const inner = papers.map( (paper, i) => h(PaperResult, {key: i, paper}));
+
+    return h("div.publication", [
+        h("h1.journal-title", name),
+        h("div", inner)
+    ])
 };
 
 const SnippetResultsPage = (props)=>{
-  const {data} = props
-  if (data == null || data.length == 0) return null
+  const {data} = props;
+  if (data == null || data.length == 0) return null;
 
-  let results = {}
+  let results = {};
   data.map ( (art) => {
       if ( !(art["pubname"] in results) ) {
           results[art['pubname']] = []
       }
       results[art['pubname']].push(art)
-  } )
+  } );
   const pubNames = Object.keys(results);
 
   return <div className="snippets-page">
     {pubNames.map((pub,i) => h(PublicationSnippets, {name: pub, papers: results[pub], key: i}))}
   </div>
-}
+};
 
 const SnippetResults = (props) => {
-  const {data, count} = props
-  if (data == null || data.length == 0) return null
-  console.log(data)
+  const {data, count} = props;
+  if (data == null || data.length == 0) return null;
+  console.log(data);
 
-  let results = {}
+  let results = {};
   data.map ( (art) => {
       if ( !(art["pubname"] in results) ) {
           results[art['pubname']] = []
       }
       results[art['pubname']].push(art)
-  } )
+  } );
+
   const pubNames = Object.keys(results);
 
   let countItem = null;
@@ -110,7 +112,7 @@ const SnippetResults = (props) => {
       {data.map((d,i) => h(SnippetResultsPage, {data: d, key: i}))}
     </div>
   </div>
-}
+};
 
 const RelatedTermsView = (props)=>{
   const {searchString, debounce} = props;
@@ -127,11 +129,11 @@ const RelatedTermsView = (props)=>{
 //    Terms related to the one you searched for.
 //  </Callout>
 
-}
+};
 
 const InitialPlaceholder = (props)=>{
 
-}
+};
 
 const ResultView = (props)=>{
   const {searchString, debounce} = props;
@@ -143,9 +145,9 @@ const ResultView = (props)=>{
           unwrapResponse={res=>res.success}
           getCount={res => res?.success?.hits }
           getNextParams={(res, params)=>{
-            console.log(res)
-            const {scrollId} = res?.success
-            if (scrollId == null || scrollId == "") return null
+            console.log(res);
+            const {scrollId} = res?.success;
+            if (scrollId == null || scrollId == "") return null;
             return {scroll_id: scrollId}
           }}
           getItems={res=>{
@@ -160,7 +162,7 @@ const ResultView = (props)=>{
     Search xDD for contextual use of a term or phrase.
   </Callout>
 
-}
+};
 
 const SnippetsPage = (props)=>{
   const [searchString, updateSearchString] = useSearchString("/snippets");
@@ -168,10 +170,10 @@ const SnippetsPage = (props)=>{
   // Set input value to search string when it changes (enables default search behaviour)
   useEffect(()=>{
     setInputValue(searchString)
-  }, [searchString])
+  }, [searchString]);
 
 
-  return <BasePage title="snippets search">
+  return <BasePage title="snippets search" fixedHeader={true}>
     <div className="searchbar">
       <InputGroup
         className="main-search"
@@ -193,6 +195,6 @@ const SnippetsPage = (props)=>{
     </div>
     <ResultView searchString={searchString} />
   </BasePage>
-}
+};
 
 export default SnippetsPage
