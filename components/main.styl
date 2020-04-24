@@ -120,7 +120,7 @@ a.link-card
   &:hover
     background-color: $light-gray3
 
-.searchbar
+.search-bar
   display flex
   flex-direction row
   position sticky
@@ -171,8 +171,22 @@ div.publication
   background #ffffff
 }
 
-  .results {
-    padding: 0 4px
-  }
+.results {
+  padding: 0 4px
+}
+
+.loading-overlay {
+  display: grid
+  place-items: center
+  position fixed
+  top 0
+  left 0
+  right 0
+  bottom 0
+  height 100%
+  width 100%
+  z-index 99999
+  background #ffffff;
+}
 
 
