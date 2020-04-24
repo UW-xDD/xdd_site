@@ -7,7 +7,7 @@ import h from '@macrostrat/hyper'
 import "@macrostrat/ui-components/lib/esm/index.css"
 import "@blueprintjs/core/lib/css/blueprint.css"
 import { InputGroup, Callout, Button, Intent, Spinner } from "@blueprintjs/core"
-import { useSearchString } from '../components/search'
+// import { useSearchString } from '../components/search'
 import { LinkCard } from '../components/link-card'
 import { useRouter } from 'next/router';
 
@@ -56,7 +56,7 @@ const Highlights = ({highlights}) => {
 };
 
 const PaperResult = ({paper}) => {
-    return <LinkCard className={`${paper._gddid} hit`} href={`/article/${paper._gddid}`}>
+    return <LinkCard key={paper._gddid} className={`${paper._gddid} hit`} href={`/article/${paper._gddid}`}>
         <h2>{paper.title}</h2>
         <Highlights highlights={paper.highlight} />
     </LinkCard>
@@ -136,6 +136,8 @@ const RelatedTermsView = (props)=>{
 const ResultView = (props)=> {
     const {searchString, debounce} = props;
 
+    // let search = useSearchString(searchString);
+
     // let storedSearchString = PARAMS.term;
     // let update = false;
     // console.log("SEARCH STRING: ");
@@ -151,9 +153,9 @@ const ResultView = (props)=> {
     // }
 
 
-    function setLoading(value) {
-        props.doneLoading(value);
-    }
+    // function setLoading(value) {
+    //     props.doneLoading(value);
+    // }
 
 
     if (searchString != null && searchString != '') {
@@ -170,8 +172,8 @@ const ResultView = (props)=> {
             }}
             getItems={ res => {
                 // Make page data into a single item so we can group by pages
-                if(res.success.data) {
-                    setLoading(false);
+                if(res.success && res.success.data) {
+                    // setLoading(false);
                 }
                 return [res.success.data]
                 }
@@ -187,9 +189,14 @@ const ResultView = (props)=> {
     </Callout>
 };
 
-// function useSearchString(initialValue) {
-//     const [searchString, setSearchString] = useState("");
+// function useSearchString(value) {
+//     const [searchString, setSearchString] = useState(value);
 //
+//     useEffect( () => {
+//         setSearchString(searchString);
+//     }, [value]);
+//
+//     return searchString;
 // }
 
 export default function SnippetsPage(props) {
@@ -197,6 +204,7 @@ export default function SnippetsPage(props) {
     const [loading, setLoading] = useState(false);
     const [path, setPath] = useState("/snippets");
     const [searchString, setSearchString] = useState("");
+    // const searchString = useSearchString('');
 
     const router = useRouter();
 
@@ -226,8 +234,8 @@ export default function SnippetsPage(props) {
 
     const loadingOverlay = (loading) ? <div className="loading-overlay"><Spinner /></div> : null;
 
-    return<BasePage title="snippets search" fixedHeader={true}>
-        {loadingOverlay}
+    return<BasePage title="Snippets Search" fixedHeader={true}>
+        {/*{loadingOverlay}*/}
         <div className="search-bar">
             <InputGroup
                 className="main-search"
@@ -247,7 +255,7 @@ export default function SnippetsPage(props) {
                 initiateSearch()
             }}/>
         </div>
-        <ResultView searchString={searchString} doneLoading={handleSetLoading}/>
+        <ResultView key={searchString} searchString={searchString} doneLoading={handleSetLoading}/>
     </BasePage>
 
 };
