@@ -160,7 +160,7 @@ const ResultView = (props)=> {
 
 
     if(searchString == null || searchString == '') {
-        return <Callout icon="alert" title="Snippets" intent="info">
+        return <Callout icon="search-text" title="Snippets" intent="primary">
             Search xDD for contextual use of a term or phrase.
         </Callout>
     }
