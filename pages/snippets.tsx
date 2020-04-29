@@ -127,11 +127,6 @@ const RelatedTermsView = (props) => {
             debounce={debounce}>{renderRelatedTerms}</APIResultView>
     }
     return null
-//  return <Callout icon="alert" title="Related Terms"
-//    intent="info">
-//    Terms related to the one you searched for.
-//  </Callout>
-
 };
 
 
@@ -266,8 +261,3 @@ export default function SnippetsPage() {
 
     </BasePage>
 };
-
-
-
-
-
