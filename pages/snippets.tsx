@@ -7,12 +7,11 @@ import h from '@macrostrat/hyper'
 import "@macrostrat/ui-components/lib/esm/index.css"
 import "@blueprintjs/core/lib/css/blueprint.css"
 import { InputGroup, Callout, Button, Intent, Spinner } from "@blueprintjs/core"
-// import { useSearchString } from '../components/search'
+import { useSearchString } from '../components/search'
 import { LinkCard } from '../components/link-card'
 import { useRouter } from 'next/router';
 
 let ROUTE = "https://geodeepdive.org/api/snippets";
-
 
 const loadAPIResultView = async function(){
     const mod = await import('@macrostrat/ui-components');
@@ -90,9 +89,11 @@ const SnippetResultsPage = (props)=>{
     </div>
 };
 
+
 const SnippetResults = (props) => {
-    const {data, count} = props;
-    if (data == null || data.length == 0) return null;
+    const { numberOfResults, data} = props;
+
+    if (data == null || data.length == 0) return h('div.results', null, h(Spinner));
 
     let results = {};
     data.map ( (art) => {
@@ -103,8 +104,8 @@ const SnippetResults = (props) => {
     } );
 
     let countItem = null;
-    if (count != null) {
-        countItem = <p className="count">{`${count} articles found.`}</p>
+    if (numberOfResults > 0) {
+        countItem = <div className="flex-end"><p className="count">{`${numberOfResults} articles found.`}</p></div>
     }
 
     return <div className='results'>
@@ -115,7 +116,8 @@ const SnippetResults = (props) => {
     </div>
 };
 
-const RelatedTermsView = (props)=>{
+
+const RelatedTermsView = (props) => {
     const {searchString, debounce} = props;
 
     if (searchString != null && searchString != '') {
@@ -133,79 +135,90 @@ const RelatedTermsView = (props)=>{
 };
 
 
+
 const ResultView = (props)=> {
-    const {searchString, debounce} = props;
+    const [data, setData] = useState({
+        params: { term: '', full_results: true, inclusive: true, article_limit: 2 },
+        success: null,
+        hits: 0 }
+        );
+    // const [loading, setLoading] =  useState(false);
 
-    // let search = useSearchString(searchString);
-
-    // let storedSearchString = PARAMS.term;
-    // let update = false;
-    // console.log("SEARCH STRING: ");
-    // console.log("STORED: " + PARAMS.term);
-    //
-    // if(storedSearchString !== searchString) {
-    //     PARAMS = {
-    //         ...PARAMS,
-    //         term: searchString
-    //     };
-    //
-    //     update = true;
-    // }
+    const { searchString } = props;
 
 
-    // function setLoading(value) {
-    //     props.doneLoading(value);
-    // }
+    useEffect( () => {
+        setData({
+            params: {...data.params, term: searchString },
+            success: null,
+            hits: 0
+        });
+
+        // setLoading(true);
+
+    }, [searchString]);
 
 
-    if (searchString != null && searchString != '') {
-        console.log("INFINITE SCROLL");
-        return <InfiniteScrollView
-            route={ ROUTE }
-            params={ {"term": searchString, "full_results": true, inclusive: true, article_limit: 2} }
-            unwrapResponse={res=>res.success}
-            getCount={res => res?.success?.hits }
-            getNextParams={(res, params)=>{
-                const {scrollId} = res?.success;
-                if (scrollId == null || scrollId == "") return null;
-                return {scroll_id: scrollId}
-            }}
-            getItems={ res => {
-                // Make page data into a single item so we can group by pages
-                if(res.success && res.success.data) {
-                    // setLoading(false);
-                }
-                return [res.success.data]
-                }
-            }
-
-        >
-            <SnippetResults />
-        </InfiniteScrollView>
+    if(searchString == null || searchString == '') {
+        return <Callout icon="alert" title="Snippets" intent="info">
+            Search xDD for contextual use of a term or phrase.
+        </Callout>
     }
-    return <Callout icon="alert" title="Snippets"
-                    intent="info">
-        Search xDD for contextual use of a term or phrase.
-    </Callout>
+
+
+    function setDataState(response) {
+        if(response && response.success) {
+            // setLoading( false);
+
+            setData({
+                ...data,
+                success: response.success,
+                hits: response.success.hits
+            });
+        }
+    }
+
+    const handleResponse = (response) => {
+        if(response && response.success) {
+            setDataState(response);
+            return response.success;
+        }
+    };
+
+
+    const handleGetItems = (response) => {
+        if(response.success && response.success.data) {
+            setDataState(response);
+            return [response.success.data];
+        }
+    };
+
+
+    const handleGetNextParams = (response) => {
+        const { scrollId } = response?.success;
+        if (scrollId == null || scrollId == "") return null;
+        setDataState(response);
+        return { scroll_id: scrollId }
+    };
+
+
+    return <InfiniteScrollView
+        route={ ROUTE }
+        params={ data.params }
+        unwrapResponse={ handleResponse }
+        getNextParams={ handleGetNextParams }
+        getItems={ handleGetItems }
+    >
+        <SnippetResults numberOfResults={ data.hits } />
+    </InfiniteScrollView>
+
 };
 
-// function useSearchString(value) {
-//     const [searchString, setSearchString] = useState(value);
-//
-//     useEffect( () => {
-//         setSearchString(searchString);
-//     }, [value]);
-//
-//     return searchString;
-// }
 
-export default function SnippetsPage(props) {
+export default function SnippetsPage() {
     const [inputValue, setInputValue] = useState("");
-    const [loading, setLoading] = useState(false);
     const [path, setPath] = useState("/snippets");
     const [searchString, setSearchString] = useState("");
-    // const searchString = useSearchString('');
-
     const router = useRouter();
 
     useEffect( () => {
@@ -224,18 +237,11 @@ export default function SnippetsPage(props) {
     }
 
     function initiateSearch() {
-        setLoading(true);
         setSearchString(inputValue);
     }
 
-    function handleSetLoading(value) {
-        setLoading(value);
-    }
-
-    const loadingOverlay = (loading) ? <div className="loading-overlay"><Spinner /></div> : null;
 
     return<BasePage title="Snippets Search" fixedHeader={true}>
-        {/*{loadingOverlay}*/}
         <div className="search-bar">
             <InputGroup
                 className="main-search"
@@ -255,9 +261,13 @@ export default function SnippetsPage(props) {
                 initiateSearch()
             }}/>
         </div>
-        <ResultView key={searchString} searchString={searchString} doneLoading={handleSetLoading}/>
-    </BasePage>
 
+        <ResultView searchString={searchString}/>
+
+    </BasePage>
 };
+
+
+
 
 
