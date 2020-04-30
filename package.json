@@ -31,8 +31,7 @@
     "react-infinite-scroller": "^1.2.4",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
-    "stylus": "^0.54.7",
-    "axios": "^0.19.2"
+    "stylus": "^0.54.7"
   },
   "devDependencies": {
     "@types/node": "^13.13.0",
