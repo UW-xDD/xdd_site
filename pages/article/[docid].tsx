@@ -13,18 +13,18 @@ const loadAPIResultView = async function(){
 };
 
 const loadCard = async function(){
-  const mod = await import('@macrostrat/ui-components');
-  return mod.GDDReferenceCard
+    const mod = await import('@macrostrat/ui-components');
+    return mod.GDDReferenceCard
 };
 
 const loadSwatch = async function(){
-  const mod = await import('@macrostrat/ui-components');
-  return mod.GeoDeepDiveSwatchInner
+    const mod = await import('@macrostrat/ui-components');
+    return mod.GeoDeepDiveSwatchInnerBare
 };
 
 const loadAuthorList = async function(){
-  const mod = await import('@macrostrat/ui-components');
-  return mod.AuthorList
+    const mod = await import('@macrostrat/ui-components');
+    return mod.AuthorList
 };
 
 const APIResultView = dynamic(loadAPIResultView, { ssr: false });
@@ -38,22 +38,23 @@ const Swatch = ({data}) => {
 
 const SimilarDocs = (props) => {
     const {docs} = props;
-    return <div name="similar_docs">
-      <h2>Similar documents</h2>
-      <ul>
-          {docs.map( doc => {
-          return <li><a href={`${doc.url}`}>{doc.title} ({doc.doi})</a></li>
-          })}
-      </ul>
+    return <div>
+        <h2>Similar documents</h2>
+        <ul>
+            {docs.map( doc => {
+                return <li><a href={`${doc.url}`}>{doc.title} ({doc.doi})</a></li>
+            })}
+        </ul>
     </div>
 };
 
 const functionForStuff = (data) => {
     console.log(data);
     return <div>
-      <h1>{data.title}</h1>
-      <Swatch data={data} />
-      {/*<SimilarDocs docs={data.similar_docs} />*/}
+        <h1>{data.title}</h1>
+        <GDDReferenceCard docid={data._gddid}/>
+        {/*<Swatch data={data} />*/}
+        {/*<SimilarDocs docs={data.similar_docs} />*/}
     </div>
 };
 
@@ -108,13 +109,12 @@ const DocIDView = (props)=>{
 //
 
 const ArticlePage = ( )=> {
-  const router = useRouter();
-  const { docid } = router.query;
-  console.log(docid);
+    const router = useRouter();
+    const { docid } = router.query;
 
-  return <BasePage title="article search">
-      <DocIDView searchString={docid} />
-  </BasePage>
+    return <BasePage title="Article Search">
+        <DocIDView searchString={docid} />
+    </BasePage>
 };
 
 export default ArticlePage

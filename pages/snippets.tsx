@@ -27,7 +27,7 @@ const InfiniteScrollView = dynamic(loadCard, { ssr: false });
 
 const loadRefCard = async function(){
     const mod = await import('@macrostrat/ui-components');
-    return mod.GddReferenceCard
+    return mod.GDDReferenceCard
 };
 const GddReferenceCard = dynamic(loadRefCard, { ssr: false });
 
