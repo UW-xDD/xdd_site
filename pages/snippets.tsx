@@ -1,5 +1,4 @@
 import React, {createContext, useState, Component, useEffect} from 'react';
-import debounce from 'lodash.debounce';
 import Head from 'next/head'
 import BasePage from '../components/base-page'
 import dynamic from 'next/dynamic'
@@ -9,7 +8,6 @@ import "@blueprintjs/core/lib/css/blueprint.css"
 import { InputGroup, Callout, Button, Intent, Spinner } from "@blueprintjs/core"
 import { useSearchString } from '../components/search'
 import { LinkCard } from '../components/link-card'
-import { useRouter } from 'next/router';
 
 let ROUTE = "https://geodeepdive.org/api/snippets";
 
@@ -27,7 +25,7 @@ const InfiniteScrollView = dynamic(loadCard, { ssr: false });
 
 const loadRefCard = async function(){
     const mod = await import('@macrostrat/ui-components');
-    return mod.GddReferenceCard
+    return mod.GDDReferenceCard
 };
 const GddReferenceCard = dynamic(loadRefCard, { ssr: false });
 
@@ -137,10 +135,8 @@ const ResultView = (props)=> {
         success: null,
         hits: 0 }
         );
-    // const [loading, setLoading] =  useState(false);
 
     const { searchString } = props;
-
 
     useEffect( () => {
         setData({
@@ -148,9 +144,6 @@ const ResultView = (props)=> {
             success: null,
             hits: 0
         });
-
-        // setLoading(true);
-
     }, [searchString]);
 
 
@@ -163,8 +156,6 @@ const ResultView = (props)=> {
 
     function setDataState(response) {
         if(response && response.success) {
-            // setLoading( false);
-
             setData({
                 ...data,
                 success: response.success,
@@ -212,29 +203,15 @@ const ResultView = (props)=> {
 
 export default function SnippetsPage() {
     const [inputValue, setInputValue] = useState("");
-    const [path, setPath] = useState("/snippets");
-    const [searchString, setSearchString] = useState("");
-    const router = useRouter();
-
-    useEffect( () => {
-        router.push(path, path, {shallow: true});
-    }, [path]);
-
+    const [searchString, updateSearchString] = useSearchString("/snippets");
 
     function handleInputValueChange(e) {
-        if (e.target.value !== '') {
-            setPath('/snippets?search=' + e.target.value);
-        } else {
-            setPath("/snippets");
-        }
-
         setInputValue(e.target.value);
     }
 
     function initiateSearch() {
-        setSearchString(inputValue);
+        updateSearchString(inputValue);
     }
-
 
     return<BasePage title="Snippets Search" fixedHeader={true}>
         <div className="search-bar">

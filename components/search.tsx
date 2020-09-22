@@ -1,33 +1,35 @@
-import {useState, useEffect} from 'react'
-import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-const useSearchString = (pathname)=> {
-  /*
-  A React hook to manage a search string and
-  synchronize URL query parameters
-  */
-  const router = useRouter();
+const useSearchString = (pathname) => {
+    /*
+    A React hook to manage a search string and
+    synchronize URL query parameters
+    */
+    const router = useRouter();
 
-  const [searchString, setState] = useState()
+    const [searchString, setState] = useState();
 
-  useEffect(()=>{
-    if (searchString == null) {
-      setState(router.query.search)
-    }
-  }, [router.query]);
+    useEffect(() => {
+        if (searchString == null && router.query['search']) {
+            setState(router.query['search'])
+        }
+    }, [router.query]);
 
-  const updateSearchString = (val)=>{
-    setState(val)
-    // Update query to house search string
-    const href = {
-      pathname,
-      query: {search: val}
+    const updateSearchString = (val) => {
+        setState(val);
+
+        const query = (val != '') ? { search: val } : null;
+
+        const href = {
+            pathname,
+            query: query
+        };
+
+        router.push(href, href, {shallow: true});
     };
-    const as = href;
-    router.push(href, as, {shallow: true});
-  }
 
-  return [searchString, updateSearchString]
-}
+    return [searchString, updateSearchString]
+};
 
 export {useSearchString}
