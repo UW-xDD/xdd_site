@@ -5,6 +5,7 @@ import "@macrostrat/ui-components/lib/esm/index.css";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import { InputGroup, Button } from "@blueprintjs/core";
 import { useRouter } from "next/router";
+import { useSearchString } from "../components/search";
 
 /* The below async function creates a dynamically-loaded components that
 support next.js server-side rendering */
@@ -17,26 +18,14 @@ const ResultView = dynamic(loadResultView, { ssr: false });
 
 export default function SnippetsPage() {
   const [inputValue, setInputValue] = useState("");
-  const [path, setPath] = useState("/snippets");
-  const [searchString, setSearchString] = useState("");
-  const router = useRouter();
-
-  useEffect(() => {
-    router.push(path, path, { shallow: true });
-  }, [path]);
+  const [searchString, updateSearchString] = useSearchString("/snippets");
 
   function handleInputValueChange(e) {
-    if (e.target.value !== "") {
-      setPath("/snippets?search=" + e.target.value);
-    } else {
-      setPath("/snippets");
-    }
-
     setInputValue(e.target.value);
   }
 
   function initiateSearch() {
-    setSearchString(inputValue);
+    updateSearchString(inputValue);
   }
 
   return (
