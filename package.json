@@ -3,19 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "preinstall": "scripts/preinstall.sh",
-    "watch:main": "next dev",
-    "watch:deps": "cd bundledDeps/ui-components && npm run dev --raw",
-    "dev": "concurrently npm:watch:main npm:watch:deps",
-    "build:main": "next build",
-    "build:deps": "cd bundledDeps/ui-components && npm run build",
-    "build": "npm run build:deps && npm run build:main",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start"
   },
   "dependencies": {
     "@blueprintjs/core": "^3.19.1",
     "@macrostrat/hyper": "^1.2.6",
-    "@macrostrat/ui-components": "file:./bundledDeps/ui-components",
+    "@macrostrat/ui-components": "^0.4.0",
     "@mdx-js/loader": "^1.5.1",
     "@next/mdx": "^9.1.3",
     "@zeit/next-css": "^1.0.1",
