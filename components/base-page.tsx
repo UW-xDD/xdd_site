@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import h from "react-hyperscript";
 import Nav from "./nav";
 import "./main.styl";
-// This throws an error if we include in the standard way
+
+// Stuff for basic UI setup
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
@@ -12,18 +13,13 @@ import "@macrostrat/ui-components/lib/esm/index.css";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
-const Subtitle = ({ title }) => {
-  if (title == null) return null;
-  return h("span.subtitle", [" — ", title]);
-};
-
 const TitleBlock = () => {
   return (
     <div className="page-title">
       <h1>xDD</h1>
       <h3>
-        A digital assistant to <em>extract knowledge</em> from{" "}
-        <em>published documents</em>.
+        A digital assistant to <em>extract knowledge</em> from the{" "}
+        <em>published literature</em>.
       </h3>
     </div>
   );
