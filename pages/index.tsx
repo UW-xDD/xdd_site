@@ -1,2 +1,3 @@
-import SnippetsPage from './snippets'
+import SnippetsPage from './snippets';
+
 export default SnippetsPage
