@@ -1,6 +1,4 @@
-import React, { createContext, useState, Component, useEffect } from "react";
-import debounce from "lodash.debounce";
-import Head from "next/head";
+import React, { useState, useEffect } from "react";
 import BasePage from "../components/base-page";
 import dynamic from "next/dynamic";
 import h from "@macrostrat/hyper";
@@ -13,7 +11,6 @@ import {
   Intent,
   Spinner,
 } from "@blueprintjs/core";
-import { useSearchString } from "../components/search";
 import { LinkCard } from "../components/link-card";
 import { useRouter } from "next/router";
 
@@ -222,13 +219,12 @@ const ResultView = (props) => {
   const hasMore = (res) => {
     const { scrollId } = res?.success;
     // Override to short-circuit "load everything" bug
-    return false;
     return scrollId != null && scrollId != "";
   };
 
   return (
     <InfiniteScrollView
-      className={"results"}
+      className={"infinite-scroll-view"}
       route={ROUTE}
       params={data.params}
       unwrapResponse={handleResponse}
